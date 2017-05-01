@@ -1,9 +1,9 @@
 /****************************************************\
-
-                     Utility
-    (A place to store constants and load images)
-
-\****************************************************/
+ 
+ Utility
+ (A place to store constants and load images)
+ 
+ \****************************************************/
 
 PImage blueTriangle;
 PImage blueShot;
@@ -18,7 +18,7 @@ final static float PLAYER_SHOT_SPEED = 8;
 final static float PLAYER_SHOT_DAMAGE = 3;
 
 // Evil Square and Red Shot Constants
-final static float RED_SHOT_SPEED = 7;
+final static float RED_SHOT_SPEED = 10;
 final static float RED_SHOT_DAMAGE = 1;
 final static int   EVIL_SQUARE_COOLDOWN = 60;
 final static float EVIL_SQUARE_X_SPEED = 0;

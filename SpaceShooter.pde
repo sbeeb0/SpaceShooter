@@ -1,83 +1,83 @@
 /****************************************************\
  
-                    GameEngineBase
-           (your main class - save as a new name!)
-           
-           // Last Updated 4/5/17
+ GameEngineBase
+ (your main class - save as a new name!)
  
-\****************************************************/
+ // Last Updated 4/5/17
+ 
+ \****************************************************/
 
 ArrayList<GameObject> objects;
 
 void setup()
 {
-   fullScreen();
-   gameSetup();
-   loadImages();
-   noCursor();
+  fullScreen();
+  gameSetup();
+  loadImages();
+  noCursor();
 
-   objects = new ArrayList<GameObject>();
+  objects = new ArrayList<GameObject>();
 
-   objects.add(new Player(width/2, height - 200));
+  objects.add(new Player(width/2, height - 200));
 
-   for (int x = 0; x < 15; x++)
-   {
-      objects.add(new EvilSquare(random(width), random(0, 100)));
-   }
+  for (int x = 0; x < 15; x++)
+  {
+    objects.add(new EvilSquare(random(width), random(0, 100)));
+  }
 }
 
 void draw()
 {
-   update();
-   render();
+  update();
+  render();
 }
 
 void update()
 {
-   act();
-   collisions();
-   cleanUp();
+  act();
+  collisions();
+  cleanUp();
 }
 
 void collisions()
 {
-   for (GameObject one : objects)
-   {
-      for (GameObject two : objects)
+  for (GameObject one : objects)
+  {
+    for (GameObject two : objects)
+    {
+      if (one.isCollision(two))
       {
-         if (one.isCollision(two))
-         {
-            one.addCollision(two);
-            two.addCollision(one);
-         }
+        one.addCollision(two);
+        two.addCollision(one);
       }
-   }
+    }
+  }
 }
 
 void act()
 {
-   for (int x = 0; x < objects.size (); x++)
-   {
-      objects.get(x).act();
-   }
+  for (int x = 0; x < objects.size (); x++)
+  {
+    objects.get(x).act();
+  }
 }
 
 void cleanUp()
 {
-   for (int x = 0; x < objects.size (); x++)
-   {
-      objects.get(x).cleanUp();
-   }
+  for (int x = 0; x < objects.size (); x++)
+  {
+    objects.get(x).cleanUp();
+  }
 }
 
 void render()
 {
-   background(0);
-   
-   for (int x = 0; x < objects.size (); x++)
-   {
-      objects.get(x).render();
-   }
+  background(0);
+
+  for (int x = 0; x < objects.size (); x++)
+  {
+    objects.get(x).render();
+  }
 }
 
 
@@ -89,7 +89,7 @@ void render()
  
  You do not need to modify or understand this code.
  
-\****************************************/
+ \****************************************/
 
 ArrayList<Character> keysPressed;
 
