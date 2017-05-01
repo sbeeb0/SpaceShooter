@@ -12,10 +12,12 @@ class EvilSquare extends Enemy
   private int ranShotMax;
   private int ranShot;
   private int maxShot;
+  private float init_xSpeed;
   EvilSquare(float x, float y)
   {   
     super(x, y, redSquare.width, redSquare.height);
-    xSpeed = EVIL_SQUARE_X_SPEED;
+    init_xSpeed = random(-3, 4);
+    xSpeed = init_xSpeed;
     ySpeed = EVIL_SQUARE_Y_SPEED;
     ranShotMin = 50;
     ranShotMax = 100;
@@ -27,7 +29,12 @@ class EvilSquare extends Enemy
   public void act()
   {
     super.act();
-
+    //move constantly
+    if (timer % 2 != 0) {
+      x--;
+    } else if (timer % 2 == 0) {
+      x++;
+    }
     // This code causes the enemy to wrap when it goes to the bottom of the screen
     if (y > height) 
     {
@@ -39,8 +46,12 @@ class EvilSquare extends Enemy
     }
     // This enemy does not know how to shoot - fix that!
     if (ranShot == 0) {
+      //Shoot
       objects.add(new RedShot(x+redSquare.width/2, y+10));
+      //Reset Shot Cooldown
       ranShot = maxShot;
+      //Change direction after each shot
+      xSpeed  = -xSpeed;
     }
   }
 }

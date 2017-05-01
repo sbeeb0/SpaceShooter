@@ -20,24 +20,8 @@ class Player extends GameObject
     xSpeed = 0;
     ySpeed = 0;
 
-    // uh oh... you can only move to the right - fix me!
-    if (getKey('a'))
-    {
-      xSpeed -= PLAYER_SPEED;
-    }
-    if (getKey('d'))
-    {
-      xSpeed += PLAYER_SPEED;
-    }   
-    if (getKey('w'))
-    {
-      ySpeed -= PLAYER_SPEED;
-    }   
-    if (getKey('s'))
-    {
-      ySpeed += PLAYER_SPEED;
-    }
-
+    movement();
+    collisions();
     // Pressing space bar allows you to fire... but it goes every frame!
     // Add a timer using the constant "PLAYER_COOLDOWN" provided in utility
     if (getKey(' '))
@@ -59,6 +43,38 @@ class Player extends GameObject
       {
         takeDamage(o.getDamage());
       }
+    }
+  }
+  void movement() {
+    if (getKey('a'))
+    {
+      xSpeed -= PLAYER_SPEED;
+    }
+    if (getKey('d'))
+    {
+      xSpeed += PLAYER_SPEED;
+    }   
+    if (getKey('w'))
+    {
+      ySpeed -= PLAYER_SPEED;
+    }   
+    if (getKey('s'))
+    {
+      ySpeed += PLAYER_SPEED;
+    }
+  }
+  void collisions() {
+    if (x > width - blueTriangle.width) {
+      x = width-blueTriangle.width;
+    }
+    if (x < 0) {
+      x = 0;
+    }
+    if (y > height - blueTriangle.height) {
+      y = height - blueTriangle.height;
+    }
+    if (y < 0) {
+      y = 0;
     }
   }
 }

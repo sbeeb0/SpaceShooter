@@ -1,6 +1,6 @@
 /****************************************************\
  
- GameEngineBase
+Install Gentoo
  (your main class - save as a new name!)
  
  // Last Updated 4/5/17
