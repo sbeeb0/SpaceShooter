@@ -8,7 +8,7 @@
 abstract class GameObject
 {
   ArrayList<GameObject> collisions;
-
+  protected int shotTimer;
   protected int timer;
   protected PImage image;
   protected boolean isAlive;
@@ -56,10 +56,6 @@ abstract class GameObject
   public void takeDamage(float amount)
   {
     curHealth-=amount;
-    if (curHealth <= 0) {
-      curHealth = 0;
-      die();
-    }
   }
 
   GameObject(float x, float y, float w, float h)
@@ -75,6 +71,7 @@ abstract class GameObject
     maxHealth = 1;
     timer = 0;
     damage = 0;
+    shotTimer = 15;
   }
 
   boolean containsPoint(float xPos, float yPos)
@@ -125,10 +122,13 @@ abstract class GameObject
       reactions();
       collisions.clear();
     }
-
+    shotTimer++;
     timer++;
     x = x + xSpeed;
     y = y + ySpeed;
+    if (curHealth <= 0) {
+      die();
+    }
   }
 
   void addCollision(GameObject o)
@@ -145,7 +145,7 @@ abstract class GameObject
 
   void die()
   {
-    
+
     curHealth = 0;
     isAlive = false;
   }

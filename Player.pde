@@ -9,26 +9,28 @@ class Player extends GameObject
 {
   Player(float x, float y)
   {   
-    super(x, y, blueTriangle.width, blueTriangle.height);
-    image = blueTriangle;
+    super(x, y, linuxTux.width, linuxTux.height);
+    image = linuxTux;
+    curHealth = PLAYER_BASE_HP;
+    maxHealth = PLAYER_BASE_HP;
   }
 
   public void act()
   {
     super.act();
-
     xSpeed = 0;
     ySpeed = 0;
 
+    shotTimer++;
     movement();
     collisions();
-    // Pressing space bar allows you to fire... but it goes every frame!
-    // Add a timer using the constant "PLAYER_COOLDOWN" provided in utility
+
     if (getKey(' '))
     {
-      if (timer % 15 == 0) {
+      if (shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
         objects.add(new PlayerShotBasic(x, y));  
         objects.add(new PlayerShotBasic(x+24, y));
+        shotTimer = 0;
       }
     }
   }
@@ -64,14 +66,14 @@ class Player extends GameObject
     }
   }
   void collisions() {
-    if (x > width - blueTriangle.width) {
-      x = width-blueTriangle.width;
+    if (x > width - linuxTux.width) {
+      x = width-linuxTux.width;
     }
     if (x < 0) {
       x = 0;
     }
-    if (y > height - blueTriangle.height) {
-      y = height - blueTriangle.height;
+    if (y > height - linuxTux.height) {
+      y = height - linuxTux.height;
     }
     if (y < 0) {
       y = 0;

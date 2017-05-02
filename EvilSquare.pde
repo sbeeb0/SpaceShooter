@@ -8,10 +8,6 @@
 
 class EvilSquare extends Enemy
 {
-  private int ranShotMin;
-  private int ranShotMax;
-  private int ranShot;
-  private int maxShot;
   private float init_xSpeed;
   EvilSquare(float x, float y)
   {   
@@ -19,13 +15,10 @@ class EvilSquare extends Enemy
     init_xSpeed = random(-3, 4);
     xSpeed = init_xSpeed;
     ySpeed = EVIL_SQUARE_Y_SPEED;
-    ranShotMin = 50;
-    ranShotMax = 100;
-    ranShot = (int) random(ranShotMin, ranShotMax);
-    maxShot = ranShot;
     image = redSquare;
     curHealth = 10;
     maxHealth = 10;
+    shotTimer = (int) random(0, 100);
   }
 
   public void act()
@@ -42,17 +35,13 @@ class EvilSquare extends Enemy
     {
       y = -image.height;
     }
-    // ranShot countdown
-    if (ranShot > 0) {
-      ranShot--;
+    // quick fix for 0 integers
+    if (init_xSpeed == 0) {
+      xSpeed = random(-3, 4);
     }
-    // This enemy does not know how to shoot - fix that!
-    if (ranShot == 0) {
-      //Shoot
+    if (shotTimer % EVIL_SQUARE_SHOT_COOLDOWN == 0) {
       objects.add(new RedShot(x+redSquare.width/2, y+10));
-      //Reset Shot Cooldown
-      ranShot = maxShot;
-      //Change direction after each shot
+      shotTimer = 0;
       xSpeed  = -xSpeed;
     }
   }

@@ -29,8 +29,6 @@ abstract class PlayerProjectile extends Projectile
   PlayerProjectile(float x, float y, float w, float h, float xSpeed, float ySpeed)
   {
     super(x, y, w, h, xSpeed, ySpeed);
-    damage = 10;
-    duration = 400;
   }
 
   void reactions()
@@ -53,8 +51,6 @@ abstract class EnemyProjectile extends Projectile
   EnemyProjectile(float x, float y, float w, float h, float xSpeed, float ySpeed)
   {
     super(x, y, w, h, xSpeed, ySpeed);
-    damage = 10;
-    duration = 10;
   }
 
   void reactions()
@@ -93,6 +89,7 @@ class PlayerShotBasic extends PlayerProjectile
   PlayerShotBasic(float x, float y)
   {
     super(x, y, blueShot.width, blueShot.height, 0, -PLAYER_SHOT_SPEED);
+    duration = 400;
     image = blueShot;
     damage = PLAYER_SHOT_DAMAGE;
   }
@@ -103,6 +100,7 @@ class RedShot extends EnemyProjectile
   RedShot(float x, float y)
   {
     super(x, y, redShot.width, redShot.height, 0, RED_SHOT_SPEED);
+    duration = 400;
     image = redShot;
     damage = RED_SHOT_DAMAGE;
   }

@@ -30,6 +30,8 @@ void draw()
 {
   update();
   render();
+  textSize(100);
+  text(objects.get(0).curHealth, width/2, height/2);
 }
 
 void update()
