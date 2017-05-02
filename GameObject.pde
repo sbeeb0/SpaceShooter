@@ -21,7 +21,7 @@ abstract class GameObject
   protected float h;
   protected float xSpeed;
   protected float ySpeed;
-
+  protected int duration;
   public float getX() 
   {
     return x;
@@ -56,7 +56,7 @@ abstract class GameObject
   public void takeDamage(float amount)
   {
     curHealth-=amount;
-    if (curHealth < 0) {
+    if (curHealth <= 0) {
       curHealth = 0;
       die();
     }
@@ -71,8 +71,8 @@ abstract class GameObject
     isAlive = true;
     collisions = new ArrayList<GameObject>();
     image = defaultImage;
-    curHealth = 100;
-    maxHealth = curHealth;
+    curHealth = 1;
+    maxHealth = 1;
     timer = 0;
     damage = 0;
   }
@@ -145,6 +145,7 @@ abstract class GameObject
 
   void die()
   {
+    
     curHealth = 0;
     isAlive = false;
   }

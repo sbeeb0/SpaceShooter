@@ -24,6 +24,8 @@ class EvilSquare extends Enemy
     ranShot = (int) random(ranShotMin, ranShotMax);
     maxShot = ranShot;
     image = redSquare;
+    curHealth = 10;
+    maxHealth = 10;
   }
 
   public void act()

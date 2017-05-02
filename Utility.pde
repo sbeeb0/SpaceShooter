@@ -33,5 +33,5 @@ public void loadImages()
   redSquare = loadImage("red_square.png");
   redShot = loadImage("red_shot.png");
   defaultImage = loadImage("default_image.png");
-  blueTriangle.resize(128, 128);
+  blueTriangle.resize(64, 64);
 }
