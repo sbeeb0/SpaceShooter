@@ -20,7 +20,7 @@ class EvilSquare extends Enemy
     maxHealth = 10;
     shotTimer = (int) random(0, 100);
   }
-
+  //act
   public void act()
   {
     super.act();

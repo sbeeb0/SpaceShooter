@@ -8,6 +8,8 @@
 abstract class Projectile extends GameObject
 {
   int duration;
+  int degrade;
+
   Projectile(float x, float y, float w, float h, float xSpeed, float ySpeed)
   {
     super(x, y, w, h);
@@ -101,6 +103,7 @@ class RedShot extends EnemyProjectile
   {
     super(x, y, redShot.width, redShot.height, 0, RED_SHOT_SPEED);
     duration = 400;
+    degrade = duration;
     image = redShot;
     damage = RED_SHOT_DAMAGE;
   }

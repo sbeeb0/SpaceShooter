@@ -41,7 +41,7 @@ class Player extends GameObject
     {
       GameObject o = collisions.get(x);
 
-      if (o instanceof EnemyProjectile || o instanceof Enemy)
+      if (o.isAlive && (o instanceof EnemyProjectile || o instanceof Enemy))
       {
         takeDamage(o.getDamage());
       }

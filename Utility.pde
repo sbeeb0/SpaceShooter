@@ -30,11 +30,10 @@ final static float EVIL_SQUARE_Y_SPEED = 3;
 
 public void loadImages()
 {
-  //blueTriangle = loadImage("blue_triangle.png");
   linuxTux = loadImage("149367788580497.png");
   blueShot = loadImage("blue_shot.png");
   redSquare = loadImage("red_square.png");
   redShot = loadImage("red_shot.png");
   defaultImage = loadImage("default_image.png");
-  linuxTux.resize(64, 64);
+  linuxTux.resize(32, 32);
 }
