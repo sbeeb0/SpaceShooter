@@ -22,7 +22,7 @@ void setup()
 
   for (int x = 0; x < 15; x++)
   {
-    objects.add(new EvilSquare(random(width), random(0, 100)));
+    objects.add(new BasicBug(random(width), random(0, 100)));
   }
 }
 

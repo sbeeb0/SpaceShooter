@@ -1,21 +1,22 @@
 /****************************************************\
  
- Evil Square
+ basicBug
  (a subclass of Enemy)
  
  \****************************************************/
 
 
-class EvilSquare extends Enemy
+class BasicBug extends Enemy
 {
   private float init_xSpeed;
-  EvilSquare(float x, float y)
+  BasicBug(float x, float y)
   {   
-    super(x, y, redSquare.width, redSquare.height);
+    super(x, y, basicBug.width, basicBug.height);
     init_xSpeed = random(-3, 4);
+    damage = 10;
     xSpeed = init_xSpeed;
-    ySpeed = EVIL_SQUARE_Y_SPEED;
-    image = redSquare;
+    ySpeed = BASIC_BUG_Y_SPEED;
+    image = basicBug;
     curHealth = 10;
     maxHealth = 10;
     shotTimer = (int) random(0, 100);
@@ -39,8 +40,8 @@ class EvilSquare extends Enemy
     if (init_xSpeed == 0) {
       xSpeed = random(-3, 4);
     }
-    if (shotTimer % EVIL_SQUARE_SHOT_COOLDOWN == 0) {
-      objects.add(new RedShot(x+redSquare.width/2, y+10));
+    if (shotTimer % BASIC_BUG_SHOT_COOLDOWN == 0) {
+      objects.add(new RedShot(x+basicBug.width/2, y+10));
       shotTimer = 0;
       xSpeed  = -xSpeed;
     }

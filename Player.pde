@@ -66,14 +66,14 @@ class Player extends GameObject
     }
   }
   void collisions() {
-    if (x > width - linuxTux.width) {
-      x = width-linuxTux.width;
+    if (x > width - w) {
+      x = width-w;
     }
     if (x < 0) {
       x = 0;
     }
-    if (y > height - linuxTux.height) {
-      y = height - linuxTux.height;
+    if (y > height - h) {
+      y = height - h;
     }
     if (y < 0) {
       y = 0;
