@@ -15,7 +15,7 @@ abstract class Projectile extends GameObject
     super(x, y, w, h);
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
-    duration = Integer.MAX_VALUE;
+    duration = 50;
   }
 
   void act() {

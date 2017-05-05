@@ -6,7 +6,6 @@
  // Last Updated 4/5/17
  
  \****************************************************/
-
 ArrayList<GameObject> objects;
 
 void setup()
@@ -15,14 +14,13 @@ void setup()
   gameSetup();
   loadImages();
   noCursor();
-
   objects = new ArrayList<GameObject>();
 
   objects.add(new Player(width/2, height - 200));
-
+  // Spawning Enemies
   for (int x = 0; x < 15; x++)
   {
-    objects.add(new BasicBug(random(width), random(0, 100)));
+    objects.add(new BasicVirus(random(width), random(0, 100)));
   }
 }
 
@@ -31,7 +29,7 @@ void draw()
   update();
   render();
   textSize(100);
-  text(objects.get(0).curHealth, width/2, height/2);
+  text(objects.get(0).curHealth, width-600, 100);
 }
 
 void update()
@@ -81,6 +79,7 @@ void render()
     objects.get(x).render();
   }
 }
+
 
 
 
