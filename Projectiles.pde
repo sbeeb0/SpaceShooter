@@ -108,3 +108,18 @@ class RedShot extends EnemyProjectile
     damage = RED_SHOT_DAMAGE;
   }
 }
+
+class laserShot extends EnemyProjectile
+{
+  laserShot(float x, float y)
+  {
+    super(x, y, redShot.width, redShot.height, 0, RED_SHOT_SPEED);
+    duration = 400;
+    image = redShot;
+    degrade = duration;
+    damage = RED_SHOT_DAMAGE;
+    super.act();
+    w++;
+    h++;
+  }
+}

@@ -47,7 +47,7 @@ class BasicVirus extends Enemy
       xSpeed = random(-3, 4);
     }
     if (shotTimer % BASIC_VIRUS_SHOT_COOLDOWN == 0) {
-      objects.add(new RedShot(x+basicVirus1.width/2, y+10));
+      objects.add(new laserShot(x+basicVirus1.width/2, y+10));
       shotTimer = 0;
       xSpeed  = -xSpeed;
     }
