@@ -41,7 +41,7 @@ class BasicBug extends Enemy
       xSpeed = random(-3, 4);
     }
     if (shotTimer % BASIC_BUG_SHOT_COOLDOWN == 0) {
-      objects.add(new RedShot(x+basicBug.width/2, y+10));
+      objects.add(new RedShot(x+basicBug.width/2, y+basicBug.height/2));
       shotTimer = 0;
       xSpeed  = -xSpeed;
     }

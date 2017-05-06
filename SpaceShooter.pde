@@ -7,6 +7,7 @@
  
  \****************************************************/
 ArrayList<GameObject> objects;
+ArrayList<Star> stars;
 
 void setup()
 {
@@ -15,12 +16,26 @@ void setup()
   loadImages();
   noCursor();
   objects = new ArrayList<GameObject>();
-
+  stars = new ArrayList<Star>();
   objects.add(new Player(width/2, height - 200));
   // Spawning Enemies
+
+  //for (int x = 0; x < 15; x++)
+  //{
+  //  objects.add(new b1(random(width), random(0, 100)));
+  //}
+
+
+  // ALIGN FROM TOP DOWN: IMAGE(X LENGTH) * 1.28 = OFFSET of | width/2+incrementer*OFFSET |
   for (int x = 0; x < 15; x++)
   {
-    objects.add(new BasicVirus(random(width), random(0, 100)));
+    objects.add(new b1(width/2+x*100, 50));
+  }
+
+
+  //Stars!
+  for (int n = 0; n < 300; n++) {
+    stars.add(new Star(random(width), random(height), random(2, 4)));
   }
 }
 
@@ -73,7 +88,9 @@ void cleanUp()
 void render()
 {
   background(0);
-
+  for (int n = 0; n < 300; n ++) {
+    stars.get(n).act();
+  }
   for (int x = 0; x < objects.size (); x++)
   {
     objects.get(x).render();

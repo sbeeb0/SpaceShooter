@@ -118,8 +118,25 @@ class laserShot extends EnemyProjectile
     image = redShot;
     degrade = duration;
     damage = RED_SHOT_DAMAGE;
+  }
+  void act() {
     super.act();
-    w++;
     h++;
+  }
+}
+
+class glassesProj extends EnemyProjectile
+{
+  glassesProj(float x, float y)
+  {
+    super(x, y, glasses.width, glasses.height, 0, GLASSES_SPEED);
+    duration = 400;
+    degrade = duration;
+    image = glasses;
+    damage = GLASSES_DAMAGE;
+  }
+  void act() {
+    super.act();
+    //
   }
 }
