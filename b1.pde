@@ -16,7 +16,6 @@ class b1 extends Enemy
     curHealth = 128;
     maxHealth = 128;
     shotTimer = (int) random(0, 100);
-    ;
   }
   //act
   public void act()

@@ -28,7 +28,7 @@ final static int   PLAYER_BASE_HP = 100;
 // Red Shot Constants
 final static float RED_SHOT_SPEED = 10;
 final static float RED_SHOT_DAMAGE = 10;
-final static float GLASSES_SPEED = 10;
+final static float GLASSES_SPEED = 7;
 final static float GLASSES_DAMAGE = 30;
 
 // BasicBug Constants
@@ -44,10 +44,10 @@ final static float BASIC_VIRUS_X_SPEED = 1;
 final static float BASIC_VIRUS_Y_SPEED = 3;
 
 // b1 Constants
-final static int   B1_SHOT_COOLDOWN = 70;
-final static int   B1_HP = 10;
+final static int   B1_SHOT_COOLDOWN = 140;
+final static int   B1_HP = 5;
 final static float B1_X_SPEED = 1;
-final static float B1_Y_SPEED = 3;
+final static float B1_Y_SPEED = 1;
 
 public void loadImages()
 {

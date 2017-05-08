@@ -20,18 +20,24 @@ void setup()
   objects.add(new Player(width/2, height - 200));
   // Spawning Enemies
 
-  //for (int x = 0; x < 15; x++)
-  //{
-  //  objects.add(new b1(random(width), random(0, 100)));
-  //}
-
-
-  // ALIGN FROM TOP DOWN: IMAGE(X LENGTH) * 1.28 = OFFSET of | width/2+incrementer*OFFSET |
   for (int x = 0; x < 15; x++)
   {
-    objects.add(new b1(width/2+x*100, 50));
+    objects.add(new b1(random(width), random(0, 100)));
   }
 
+
+  /* ALIGN FROM TOP DOWN: IMAGE(X LENGTH) * 1.28 = OFFSET of | width/2+incrementer*OFFSET |
+   for (int x = 0; x < 15; x++)
+   {
+   objects.add(new b1(width/2+x*100, 50));
+   }
+   */
+
+  /* ALIGN FROM LEFT TO RIGHT: IMAGE(X LENGTH) 1.28 = OFFSET of | width/2+incrementer*OFFSET |
+   for (int x = 0; x < 15; x++) {
+   objects.add(new b1(50, height/2+x*100));
+   }
+   */
 
   //Stars!
   for (int n = 0; n < 300; n++) {
