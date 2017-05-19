@@ -7,14 +7,21 @@
 
 abstract class Enemy extends GameObject
 {
+  protected int value;
   Enemy(float x, float y, float w, float h)
   {
     super(x, y, w, h);
+    value = 1;
   }
 
   public void act()
   {
     super.act();
+  }
+
+  public void die() {
+    super.die();
+    credits+=value;
   }
 
   public void reactions()

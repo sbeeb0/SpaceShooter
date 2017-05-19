@@ -25,12 +25,6 @@ class BasicBug extends Enemy
   public void act()
   {
     super.act();
-    //move constantly
-    if (timer % 2 != 0) {
-      x--;
-    } else if (timer % 2 == 0) {
-      x++;
-    }
     // This code causes the enemy to wrap when it goes to the bottom of the screen
     if (y > height) 
     {

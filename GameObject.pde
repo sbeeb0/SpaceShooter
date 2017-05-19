@@ -4,7 +4,6 @@
  (the super class of player, enemy, and projectiles)
  
  \****************************************************/
-
 abstract class GameObject
 {
   ArrayList<GameObject> collisions;
@@ -12,6 +11,7 @@ abstract class GameObject
   protected int timer;
   protected PImage image;
   protected boolean isAlive;
+  protected boolean invulnerable;
   protected float curHealth;
   protected float maxHealth;
   protected float damage;
@@ -126,7 +126,7 @@ abstract class GameObject
     timer++;
     x = x + xSpeed;
     y = y + ySpeed;
-    if (curHealth <= 0) {
+    if (curHealth <= 0 && isAlive) {
       die();
     }
   }
@@ -145,7 +145,6 @@ abstract class GameObject
 
   void die()
   {
-
     curHealth = 0;
     isAlive = false;
   }

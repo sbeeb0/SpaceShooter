@@ -8,7 +8,6 @@
 abstract class Projectile extends GameObject
 {
   int duration;
-  int degrade;
 
   Projectile(float x, float y, float w, float h, float xSpeed, float ySpeed)
   {
@@ -96,6 +95,29 @@ class PlayerShotBasic extends PlayerProjectile
     damage = PLAYER_SHOT_DAMAGE;
   }
 }
+class flameShot extends PlayerProjectile
+{
+  flameShot(float x, float y)
+  {
+    super(x, y, blueShot.width, blueShot.height, random(-1, 1), -random(3, 6));
+    duration = 30;
+    image = blueShot;
+    damage = 1;
+  }
+}
+
+class octoShot extends PlayerProjectile
+{
+  octoShot(float x, float y, float xSpeed, float ySpeed)
+  {
+    super(x, y, blueShot.width, blueShot.height, xSpeed, ySpeed);
+    duration = 30;
+    image = blueShot;
+    damage = PLAYER_SHOT_DAMAGE;
+  }
+}
+
+//////////////////////////////ENEMY PROJECTILES //////////////////////////
 
 class RedShot extends EnemyProjectile
 {
@@ -103,7 +125,6 @@ class RedShot extends EnemyProjectile
   {
     super(x, y, redShot.width, redShot.height, 0, RED_SHOT_SPEED);
     duration = 400;
-    degrade = duration;
     image = redShot;
     damage = RED_SHOT_DAMAGE;
   }
@@ -111,17 +132,56 @@ class RedShot extends EnemyProjectile
 
 class laserShot extends EnemyProjectile
 {
+  private PVector location;
   laserShot(float x, float y)
   {
-    super(x, y, redShot.width, redShot.height, 0, RED_SHOT_SPEED);
+    super(x, y, redShot.width, redShot.height, 1, 5);
+    location = new PVector(x, y, 0);
     duration = 400;
     image = redShot;
-    degrade = duration;
     damage = RED_SHOT_DAMAGE;
   }
   void act() {
     super.act();
-    h++;
+    float angle = atan2(p.y-location.y, p.x-location.x);
+    float newX = cos(angle)*(ySpeed/xSpeed)+location.x;
+    float newY = sin(angle)*(ySpeed/xSpeed)+location.y;
+    x = newX;
+    y = newY;
+    location.set(x, y, 0);
+    //h++;
+  }
+}
+
+class omniShot extends EnemyProjectile
+{
+  omniShot(float x, float y, float xSpeed, float ySpeed)
+  {
+    super(x, y, omniShot.width, omniShot.height, xSpeed, ySpeed);
+    duration = 100;
+    image = omniShot;
+    damage = OMNI_SHOT_DAMAGE;
+  }
+}
+
+class TerminatorShot extends EnemyProjectile
+{
+  TerminatorShot(float x, float y, float speed)
+  {
+    super(x, y, redShot.width, redShot.height, speed, 0);
+    duration = 200;
+    image = redShot;
+    damage = TERMINATOR_SHOT_DAMAGE;
+  }
+  void act() {
+    super.act();
+    if (timer % 15 == 0) {
+      w+= 10;
+      h+= 10;
+    } else {
+      w--;
+      h--;
+    }
   }
 }
 
@@ -129,14 +189,15 @@ class glassesProj extends EnemyProjectile
 {
   glassesProj(float x, float y)
   {
-    super(x, y, glasses.width, glasses.height, 0, GLASSES_SPEED);
+    super(x, y, glasses.width, glasses.height, GLASSES_SPEED/2, GLASSES_SPEED);
     duration = 400;
-    degrade = duration;
     image = glasses;
     damage = GLASSES_DAMAGE;
   }
   void act() {
     super.act();
-    //
+    if (timer % 10 == 0) {
+      xSpeed *= -1;
+    }
   }
 }

@@ -4,15 +4,19 @@
  (a subclass of GameObject)
  
  \****************************************************/
-
 class Player extends GameObject
 {
+  private int invulnerabilityTimer;
+  private boolean normalfire = false;
+  private boolean flamethrower = false;
+  private boolean octoshot = false;
   Player(float x, float y)
   {   
     super(x, y, linuxTux.width, linuxTux.height);
     image = linuxTux;
     curHealth = PLAYER_BASE_HP;
     maxHealth = PLAYER_BASE_HP;
+    invulnerabilityTimer = 0;
   }
 
   public void act()
@@ -24,7 +28,6 @@ class Player extends GameObject
     shotTimer++;
     movement();
     collisions();
-
     if (getKey(' '))
     {
       if (shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
@@ -32,6 +35,40 @@ class Player extends GameObject
         objects.add(new PlayerShotBasic(x+24, y));
         shotTimer = 0;
       }
+    }
+    if (getKey('j') && !getKey(' ')) {
+      if (flamethrower) {
+        objects.add(new flameShot(x+w/2, y));
+        objects.add(new flameShot(x+w/2, y));
+        objects.add(new flameShot(x+w/2, y));
+      }
+    }
+    if (getKey('k') && !getKey(' ')) {
+      if (octoshot && shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, OMNI_SHOT_SPEED + PLAYER_SPEED, 0));
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, -OMNI_SHOT_SPEED - PLAYER_SPEED, 0));
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, 0, OMNI_SHOT_SPEED + PLAYER_SPEED));
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, 0, -OMNI_SHOT_SPEED - PLAYER_SPEED));
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, OMNI_SHOT_SPEED/2 + PLAYER_SPEED, OMNI_SHOT_SPEED/2 + PLAYER_SPEED));
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, -OMNI_SHOT_SPEED/2 - PLAYER_SPEED, -OMNI_SHOT_SPEED/2 - PLAYER_SPEED));
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, -OMNI_SHOT_SPEED/2 - PLAYER_SPEED, OMNI_SHOT_SPEED/2 + PLAYER_SPEED));
+        objects.add(new octoShot(x+image.width/2, y+image.height/2, OMNI_SHOT_SPEED/2 + PLAYER_SPEED, -OMNI_SHOT_SPEED/2 - PLAYER_SPEED));
+      }
+    }
+    if (invulnerabilityTimer > 0) {
+      invulnerabilityTimer--;
+    } else {
+      invulnerable = false;
+    }
+    if (invulnerable) {
+      if (timer % 2 == 0) {
+        image = linuxTux;
+      } else {
+        image = ubuntu3;
+      }
+    }
+    if (invulnerabilityTimer <= 0) {
+      image = linuxTux;
     }
   }
 
@@ -41,12 +78,13 @@ class Player extends GameObject
     {
       GameObject o = collisions.get(x);
 
-      if (o.isAlive && (o instanceof EnemyProjectile || o instanceof Enemy))
+      if (!invulnerable && o.isAlive && (o instanceof EnemyProjectile || o instanceof Enemy))
       {
         takeDamage(o.getDamage());
       }
     }
   }
+
   void movement() {
     if (getKey('a'))
     {
@@ -77,6 +115,26 @@ class Player extends GameObject
     }
     if (y < 0) {
       y = 0;
+    }
+  }
+  void die() {
+    if (lives <= 0) {
+      curHealth = 0;
+      isAlive = false;
+      for (GameObject o : objects) {
+        if (o instanceof Enemy) {
+          o.die();
+        }
+      }
+    } else {
+      curHealth = maxHealth;
+      lives--;
+      x = width/2;
+      y = height-200;
+    }
+    if (lives > 0) {
+      invulnerabilityTimer = PLAYER_INVULNERABILITY_DURATION;
+      invulnerable = true;
     }
   }
 }
