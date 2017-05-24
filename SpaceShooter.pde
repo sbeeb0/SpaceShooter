@@ -5,11 +5,15 @@
  // Last Updated 4/5/17
  
  \****************************************************/
+PFont font;
 ArrayList<GameObject> objects;
 ArrayList<Star> stars;
 private String gamestate;
 private int pauseTimer = PAUSE_DELAY;
 private int credits = 100;
+private int timer;
+private float titleX = 0;
+private float titleSpeed = 3;
 Player p;
 int level = 0;
 int lives = PLAYER_LIVES;
@@ -21,6 +25,9 @@ void setup()
   noCursor();
   objects = new ArrayList<GameObject>();
   stars = new ArrayList<Star>();
+  //font = createFont("kenvector_future.ttf" ,48);
+  font = createFont("kenvector_future.ttf", 48);
+  textFont(font);
   p = new Player(width/2, height - 200);
   objects.add(p);
   gamestate = "title";
@@ -39,12 +46,13 @@ void setup()
 
   //Stars!
   for (int n = 0; n < 300; n++) {
-    stars.add(new Star(random(width), random(height), (int) random(2, 5)));
+    stars.add(new Star(random(width), random(height), (int) random(2, 4)));
   }
 }
 
 void draw()
 {
+  timer++;
   if (pauseTimer > 0) {
     pauseTimer--;
   }
@@ -57,6 +65,13 @@ void draw()
   }
   if (gamestate.equals("title")) {
     drawTitle();
+    titleX+=titleSpeed;
+    if (titleX > 330) {
+      titleSpeed *= -1;
+    }
+    if (titleX < -330) {
+      titleSpeed *= -1;
+    }
   }
 }
 
@@ -120,13 +135,13 @@ void spawnEnemies() {
 void spawnBasicVirus(int amount) {
   for (int x = 0; x < amount; x++)
   {
-    objects.add(new BasicVirus(random(100, width-100), random(-100, 0)));
+    objects.add(new BasicVirus(random(100, width-100), random(-500, -400)));
   }
 }
 void spawnBasicBug(int amount) {
   for (int x = 0; x < amount; x++)
   {
-    objects.add(new BasicBug(random(100, width-100), random(-100, 0)));
+    objects.add(new BasicBug(random(100, width-100), random(-500, -400)));
   }
 }
 void spawnTerminator(int amount) {
@@ -138,13 +153,13 @@ void spawnTerminator(int amount) {
 void spawnb1(int amount) {
   for (int x = 0; x < amount; x++)
   {
-    objects.add(new b1(random(100, width-100), random(-100, 0)));
+    objects.add(new b1(random(100, width-100), random(-500, -400)));
   }
 }
 void spawnUbuntu(int amount) {
   for (int x = 0; x < amount; x++)
   {
-    objects.add(new Ubuntu(random(100, width-100), random(-100, 0)));
+    objects.add(new Ubuntu(random(100, width-100), random(-500, -400)));
   }
 }
 
@@ -186,13 +201,13 @@ void gui() {
   //HEALTHBAR
   float drawWidth = (p.curHealth / p.maxHealth) * 200;
   stroke(120, 120, 120);
-  fill(120, 0, 0);
-  rect(100, 100, 200, 35, 100);
-  fill(255, 0, 0);
-  rect(100, 100, drawWidth, 35, 100);
+  fill(120, 0, 0, 100);
+  rect(30, height-60, 200, 35, 8);
+  fill(255, 0, 0, 100);
+  rect(30, height-60, drawWidth, 35, 8);
   fill(255);
   textSize(15);
-  text("Health: " + round(p.curHealth), 110, 123);
+  text("Health: " + round(p.curHealth), 40, height-36);
   //LEFTHAND
   fill(35, 200, 170, 150);
   rect(10, 10, 80, 240);
@@ -216,8 +231,9 @@ void drawGamePlay() {
 }
 
 void drawTitle() {
-  background(90, 65, 131);
-  image(backgroundflare, 0, 0);
+
+  background(0);
+  image(backgroundflare, titleX, 0);
   //background(80, 160, 120);
   for (int n = 0; n < stars.size(); n++) {
     stars.get(n).render();
@@ -225,10 +241,14 @@ void drawTitle() {
   for (int n = 0; n < stars.size(); n++) {
     stars.get(n).act("DIAGONAL");
   }
-  image(title, 0, 0);
+  image(title, titleX, 0);
   textSize(50);
   textAlign(CENTER, CENTER);
-  text("Press Space to Start!", width/2, height-50);
+  if (timer % 100 < 60) {
+    text("Press Space to Play!", width/2, height-50);
+  }
+  fill(255, 0, 0);
+  text("Linux: The Game", width/2, 50);
   if (getKey(' ')) {
     gamestate = "gameplay";
   }
@@ -241,21 +261,21 @@ void drawPause() {
   rect(0, 0, width, height);
   if (!p.flamethrower) {
     fill(255);
-    textSize(30);
-    text("1.) Flamethrower: $30", 100, 48);
+    textSize(20);
+    text("1.) Flamethrower: $30", 30, 300);
   } else {
     fill(120);
-    textSize(30);
-    text("1.) Flamethrower: PURCHASED", 100, 48);
+    textSize(20);
+    text("1.) Flamethrower: PURCHASED", 30, 300);
   }
   if (!p.octoshot) {
     fill(255);
-    textSize(30);
-    text("2.) Octoshot: $40", 100, 96);
+    textSize(20);
+    text("2.) Octoshot: $40", 30, 330);
   } else {
     fill(120);
-    textSize(30);
-    text("2.) Octoshot: PURCHASED", 100, 96);
+    textSize(20);
+    text("2.) Octoshot: PURCHASED", 30, 330);
   }
 
   if (getKey('p') && pauseTimer == 0) {

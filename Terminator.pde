@@ -37,4 +37,8 @@ class Terminator extends Enemy
       shotTimer = 0;
     }
   }
+  void die() {
+    super.die();
+    objects.add(new Boom(x, y, w*0.75));
+  }
 }

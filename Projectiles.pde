@@ -95,6 +95,41 @@ class PlayerShotBasic extends PlayerProjectile
     damage = PLAYER_SHOT_DAMAGE;
   }
 }
+
+class heatShot extends PlayerProjectile
+{
+  private PVector location;
+  heatShot(float x, float y)
+  {
+    super(x, y, blueShot.width, blueShot.height, random(-3, 3), -random(-3, 3));
+    location = new PVector(x, y, 0);
+    duration = 400;
+    image = blueShot;
+    damage = PLAYER_SHOT_DAMAGE;
+  }
+  void act() {
+    super.act();
+    for (GameObject o : objects) {
+      if (o instanceof Enemy) {
+        float angle = atan2(o.y-location.y, o.x-location.x);
+        float newX = cos(angle)*(ySpeed/xSpeed)+location.x;
+        float newY = sin(angle)*(ySpeed/xSpeed)+location.y;
+        x = newX;
+        y = newY;
+        xSpeed = o.xSpeed;
+        ySpeed = o.ySpeed;
+        println(o);
+        location.set(x, y, 0);
+        if (x == o.x) {
+          die();
+        } else if (y == o.y) {
+          die();
+        }
+      }
+    }
+  }
+}
+
 class flameShot extends PlayerProjectile
 {
   flameShot(float x, float y)

@@ -7,7 +7,6 @@
 class Player extends GameObject
 {
   private int invulnerabilityTimer;
-  private boolean normalfire = false;
   private boolean flamethrower = false;
   private boolean octoshot = false;
   Player(float x, float y)
@@ -36,14 +35,20 @@ class Player extends GameObject
         shotTimer = 0;
       }
     }
-    if (getKey('j') && !getKey(' ')) {
+    if (getKey('j') && !getKey(' ') && !getKey('k')) {
       if (flamethrower) {
         objects.add(new flameShot(x+w/2, y));
         objects.add(new flameShot(x+w/2, y));
         objects.add(new flameShot(x+w/2, y));
       }
     }
-    if (getKey('k') && !getKey(' ')) {
+    if (getKey('u') && shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
+      objects.add(new heatShot(x+w/2, y));
+      objects.add(new heatShot(x+w/2, y));
+      objects.add(new heatShot(x+w/2, y));
+      shotTimer = 0;
+    }
+    if (getKey('k') && !getKey(' ') && !getKey('j')) {
       if (octoshot && shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
         objects.add(new octoShot(x+image.width/2, y+image.height/2, OMNI_SHOT_SPEED + PLAYER_SPEED, 0));
         objects.add(new octoShot(x+image.width/2, y+image.height/2, -OMNI_SHOT_SPEED - PLAYER_SPEED, 0));

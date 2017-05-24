@@ -61,4 +61,8 @@ class Ubuntu extends Enemy
       ranImage++;
     }
   }
+  void die() {
+    super.die();
+    objects.add(new Boom(x, y, w*0.75));
+  }
 }

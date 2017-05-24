@@ -20,6 +20,7 @@ PImage ubuntu2;
 PImage ubuntu3;
 PImage ubuntu4;
 PImage omniShot;
+PImage boom;
 PImage terminator;
 PImage title;
 PImage backgroundflare;
@@ -99,5 +100,6 @@ public void loadImages()
   b1 = loadImage("b1.png");
   glasses = loadImage("glasses2.png");
   title = loadImage("richy.png");
-  backgroundflare = loadImage("backgroundflare3.png");
+  backgroundflare = loadImage("backgroundflare1.png");
+  boom = loadImage("boom.png");
 }

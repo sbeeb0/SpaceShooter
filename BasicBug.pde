@@ -40,4 +40,8 @@ class BasicBug extends Enemy
       xSpeed  = -xSpeed;
     }
   }
+  void die() {
+    super.die();
+    objects.add(new Boom(x, y, w*0.75));
+  }
 }
