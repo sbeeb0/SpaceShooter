@@ -35,6 +35,7 @@ final static int   PLAYER_BASE_HP = 100;
 final static int   PLAYER_LIVES = 5;
 final static int   PLAYER_INVULNERABILITY_DURATION = 180;
 final static int   PAUSE_DELAY = 40;
+final static int   MAX_LEVEL = 20;
 
 // Upgrade Constants
 final static int   FLAMETHROWER_COST = 30;
@@ -79,12 +80,19 @@ final static float UBUNTU_Y_SPEED = 1;
 // Terminator Constants
 final static int   TERMINATOR_SHOT_COOLDOWN = 140;
 final static int   TERMINATOR_HP = 5;
-final static float TERMINATOR_X_SPEED = 2;
+final static float TERMINATOR_X_SPEED = 1;
 final static float TERMINATOR_Y_SPEED = 0;
+
+// Ubuntu Constants
+final static int   BOSS_SHOT_COOLDOWN = 140;
+final static int   BOSS_HP = 100;
+final static float BOSS_X_SPEED = 1;
+final static float BOSS_Y_SPEED = 1;
+
 
 public void loadImages()
 {
-  linuxTux = loadImage("linuxTux.png");
+  linuxTux = loadImage("linuxTux3.png");
   blueShot = loadImage("blue_shot.png");
   redSquare = loadImage("red_square.png");
   basicBug = loadImage("basicBug.png");

@@ -1,21 +1,23 @@
-/****************************************************\
- Install Gentoo
- (your main class - save as a new name!)
- 
- // Last Updated 4/5/17
- 
- \****************************************************/
+///****************************************************\
+//Install Gentoo
+//(your main class - save as a new name!)
+
+// Last Updated 4/5/17
+//****************************************************/
 PFont font;
 ArrayList<GameObject> objects;
-ArrayList<Star> stars;
+ArrayList<Ambient> ambience;
 private String gamestate;
 private int pauseTimer = PAUSE_DELAY;
 private int credits = 100;
 private int timer;
 private float titleX = 0;
 private float titleSpeed = 3;
+private int loseTimer = 50;
+private int winTimer = 50;
 Player p;
-int level = 0;
+Boss b;
+int level = 3;
 int lives = PLAYER_LIVES;
 void setup()
 {
@@ -24,11 +26,11 @@ void setup()
   loadImages();
   noCursor();
   objects = new ArrayList<GameObject>();
-  stars = new ArrayList<Star>();
-  //font = createFont("kenvector_future.ttf" ,48);
+  ambience = new ArrayList<Ambient>();
   font = createFont("kenvector_future.ttf", 48);
   textFont(font);
   p = new Player(width/2, height - 200);
+  b = new Boss(width/2, height - 200);
   objects.add(p);
   gamestate = "title";
   /* ALIGN FROM TOP DOWN: IMAGE(X LENGTH) * 1.28 = OFFSET of | width/2+incrementer*OFFSET |
@@ -46,7 +48,7 @@ void setup()
 
   //Stars!
   for (int n = 0; n < 300; n++) {
-    stars.add(new Star(random(width), random(height), (int) random(2, 4)));
+    ambience.add(new Star(random(width), random(height), (int) random(2, 4)));
   }
 }
 
@@ -65,13 +67,12 @@ void draw()
   }
   if (gamestate.equals("title")) {
     drawTitle();
-    titleX+=titleSpeed;
-    if (titleX > 330) {
-      titleSpeed *= -1;
-    }
-    if (titleX < -330) {
-      titleSpeed *= -1;
-    }
+  }
+  if (gamestate.equals("win")) {
+    drawWin();
+  }
+  if (gamestate.equals("lose")) {
+    drawLose();
   }
 }
 
@@ -80,6 +81,7 @@ void update()
   act();
   collisions();
   cleanUp();
+  cheats();
 }
 
 void collisions()
@@ -114,7 +116,7 @@ boolean stageIsClear() {
 
 void spawnEnemies() {
   if (level == 1) {
-    spawnBasicBug(5);
+    spawnBasicBug(1);
   }
   if (level == 2) {
     spawnBasicVirus(3);
@@ -129,6 +131,7 @@ void spawnEnemies() {
     spawnUbuntu(4);
   }
   if (level == 6) {
+    objects.add(b);
   }
 }
 
@@ -163,15 +166,29 @@ void spawnUbuntu(int amount) {
   }
 }
 
+void spawnBoss(int amount) {
+  for (int x = 0; x < amount; x++)
+  {
+    objects.add(new Boss(random(100, width-100), random(-500, -400)));
+  }
+}
+
 void act()
 {
-  for (int n = 0; n < stars.size(); n ++) {
-    stars.get(n).act("DOWN");
+  for (int x = 0; x < ambience.size(); x++)
+  {
+    ambience.get(x).update();
   }
 
   for (int x = 0; x < objects.size (); x++)
   {
     objects.get(x).act();
+  }
+  if (!p.isAlive && p != null && loseTimer >= 0) {
+    loseTimer--;
+  }
+  if (!b.isAlive && b != null && winTimer >= 0) {
+    winTimer--;
   }
 }
 
@@ -186,13 +203,15 @@ void cleanUp()
 void render()
 {
   background(0);
-  for (int n = 0; n < stars.size(); n ++) {
-    stars.get(n).render();
+  for (int x = 0; x < ambience.size (); x++)
+  {
+    ambience.get(x).render();
   }
   for (int x = 0; x < objects.size (); x++)
   {
     objects.get(x).render();
   }
+
   gui();
 }
 
@@ -212,12 +231,39 @@ void gui() {
   fill(35, 200, 170, 150);
   rect(10, 10, 80, 240);
   fill(255);
-  textSize(15);
+  textSize(13);
   fill(200, 0, 0);
-  text("FPS: " + round(frameRate), 15, 40);
+  text("FPS: " + round(frameRate), 15, 30);
   fill(255);
-  text("Lives: " + lives, 15, 60);
-  text("C$: " + credits, 15, 80);
+  text("Lives: " + lives, 15, 50);
+  text("C$: " + credits, 15, 70);
+  text("Level: " + level, 15, 90);
+}
+
+void cheats() {
+  if (getKey(']') && timer % 30 == 0) {
+    for (GameObject o : objects) {
+      if (o instanceof Enemy || o instanceof Projectile) {
+        o.die();
+      }
+    }
+    level++;
+    spawnEnemies();
+  } else if (getKey('[') && timer % 20 == 0) {
+    for (GameObject o : objects) {
+      if (o instanceof Enemy) {
+        o.die();
+      }
+    }
+    level--;
+    spawnEnemies();
+  }
+
+  if (getKey('=') && timer % 30 == 0) {
+    lives++;
+  } else if (getKey('-') && timer % 30 == 0) {
+    lives--;
+  }
 }
 
 void drawGamePlay() {
@@ -228,18 +274,74 @@ void drawGamePlay() {
     gamestate = "pause";
     pauseTimer = PAUSE_DELAY;
   }
+  if (!p.isAlive && loseTimer <= 0) {
+    gamestate = "lose";
+  }
+  if (level > MAX_LEVEL && winTimer <= 0) {
+    gamestate = "win";
+  }
+}
+
+void drawLose() {
+  if (getKey('r')) {
+    reset();
+    gamestate = "gameplay";
+  }
+  rectMode(CENTER);
+  fill(100);
+  rect(width/2, height/2, width/4, height/4);
+  textAlign(CENTER, CENTER);
+  fill(255);
+  text("YOU LOSE!", width/2, height/2);
+  text("PRESS R TO PLAY AGAIN!", width/2, height/2+200);
+  textAlign(TOP, LEFT);
+  rectMode(CORNER);
+}
+
+void drawWin() {
+  rectMode(CENTER);
+  fill(100);
+  rect(width/2, height/2, width/4, height/4);
+  textAlign(CENTER, CENTER);
+  fill(255);
+  text("YOU WIN!", width/2, height/2);
+  text("PRESS R TO PLAY AGAIN!", width/2, height/2+200);
+  textAlign(TOP, LEFT);
+  rectMode(CORNER);
+  if (getKey('r')) {
+    reset();
+    gamestate = "title";
+  }
+}
+
+void reset() {
+  objects.clear();
+  level = 0;
+  lives = 5;
+  p.x = width/2;
+  p.y = height/2;
+  p.flamethrower = false;
+  p.octoshot = false;
+  objects.add(p);
+  objects.remove(b);
+  winTimer = 0;
+  loseTimer = 0;
 }
 
 void drawTitle() {
-
   background(0);
   image(backgroundflare, titleX, 0);
   //background(80, 160, 120);
-  for (int n = 0; n < stars.size(); n++) {
-    stars.get(n).render();
+  titleX+=titleSpeed;
+  if (titleX > 330) {
+    titleSpeed *= -1;
   }
-  for (int n = 0; n < stars.size(); n++) {
-    stars.get(n).act("DIAGONAL");
+  if (titleX < -330) {
+    titleSpeed *= -1;
+  }
+  for (int x = 0; x < ambience.size (); x++)
+  {
+    ambience.get(x).render();
   }
   image(title, titleX, 0);
   textSize(50);
@@ -262,20 +364,20 @@ void drawPause() {
   if (!p.flamethrower) {
     fill(255);
     textSize(20);
-    text("1.) Flamethrower: $30", 30, 300);
+    text("1.) Flamethrower: $30            'J'", 30, 300);
   } else {
     fill(120);
     textSize(20);
-    text("1.) Flamethrower: PURCHASED", 30, 300);
+    text("1.) Flamethrower: PURCHASED            'J'", 30, 300);
   }
   if (!p.octoshot) {
     fill(255);
     textSize(20);
-    text("2.) Octoshot: $40", 30, 330);
+    text("2.) Octoshot: $40                          'K'", 30, 330);
   } else {
     fill(120);
     textSize(20);
-    text("2.) Octoshot: PURCHASED", 30, 330);
+    text("2.) Octoshot: PURCHASED                          'K'", 30, 330);
   }
 
   if (getKey('p') && pauseTimer == 0) {

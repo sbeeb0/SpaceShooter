@@ -4,7 +4,7 @@
  (a subclass of Enemy)
  
  \****************************************************/
-class BasicVirus extends Enemy
+class BasicVirus extends Enemy 
 {
   private PVector location;
   BasicVirus(float x, float y)
@@ -30,7 +30,7 @@ class BasicVirus extends Enemy
     float angle = atan2(p.y-location.y, p.x-location.x);
     float newX = cos(angle)*(ySpeed/xSpeed)+location.x;
     float newY = sin(angle)*(ySpeed/xSpeed)+location.y;
-
+    location.set(x, y, angle);
     location.set(newX, newY, 0);
     x = newX;
     y = newY;
@@ -42,6 +42,6 @@ class BasicVirus extends Enemy
   }
   void die() {
     super.die();
-    objects.add(new Boom(x, y, w*0.75));
+    ambience.add(new Boom(x, y, w*0.75));
   }
 }

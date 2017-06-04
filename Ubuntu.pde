@@ -63,6 +63,6 @@ class Ubuntu extends Enemy
   }
   void die() {
     super.die();
-    objects.add(new Boom(x, y, w*0.75));
+    ambience.add(new Boom(x, y, w*0.75));
   }
 }

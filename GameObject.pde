@@ -22,6 +22,9 @@ abstract class GameObject
   protected float xSpeed;
   protected float ySpeed;
   protected int duration;
+  protected int shieldTimer;
+  protected color shieldColor;
+
   public float getX() 
   {
     return x;
@@ -55,6 +58,7 @@ abstract class GameObject
   // Make sure health never drops below zero
   public void takeDamage(float amount)
   {
+    shieldTimer = 10;
     curHealth-=amount;
   }
 
@@ -72,6 +76,8 @@ abstract class GameObject
     timer = 0;
     damage = 0;
     shotTimer = 15;
+    shieldTimer = 0;
+    shieldColor = color(120, 0, 0, 120);
   }
 
   boolean containsPoint(float xPos, float yPos)
@@ -111,6 +117,10 @@ abstract class GameObject
   void render()
   {
     image(image, x, y, w, h);
+    if (shieldTimer > 0 && !(this instanceof Projectile)) {
+      fill(shieldColor);
+      ellipse(x+w/2, y+h/2, w*1.3, h*1.3);
+    }
   }
 
   public abstract void reactions();
@@ -128,6 +138,9 @@ abstract class GameObject
     y = y + ySpeed;
     if (curHealth <= 0 && isAlive) {
       die();
+    }
+    if (shieldTimer > 0) {
+      shieldTimer--;
     }
   }
 

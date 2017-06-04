@@ -16,6 +16,7 @@ class Player extends GameObject
     curHealth = PLAYER_BASE_HP;
     maxHealth = PLAYER_BASE_HP;
     invulnerabilityTimer = 0;
+    shieldColor = color(0, 120, 255, 120);
   }
 
   public void act()
@@ -23,15 +24,17 @@ class Player extends GameObject
     super.act();
     xSpeed = 0;
     ySpeed = 0;
-
+    if (curHealth <= 0) {
+      die();
+    }
     shotTimer++;
     movement();
     collisions();
     if (getKey(' '))
     {
       if (shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
-        objects.add(new PlayerShotBasic(x, y));  
-        objects.add(new PlayerShotBasic(x+24, y));
+        objects.add(new PlayerShotBasic(x, y+11));  
+        objects.add(new PlayerShotBasic(x+24, y+11));
         shotTimer = 0;
       }
     }
@@ -42,11 +45,13 @@ class Player extends GameObject
         objects.add(new flameShot(x+w/2, y));
       }
     }
-    if (getKey('u') && shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
-      objects.add(new heatShot(x+w/2, y));
-      objects.add(new heatShot(x+w/2, y));
-      objects.add(new heatShot(x+w/2, y));
-      shotTimer = 0;
+    if (getKey('u') && !getKey(' ') && !getKey('k') && !getKey('j')) {
+      if (shotTimer % 60 == 0) {
+        for (int i = 0; i < 3; i++) {
+          objects.add(new heatShot(x+w/2, y));
+        }
+        shotTimer = 0;
+      }
     }
     if (getKey('k') && !getKey(' ') && !getKey('j')) {
       if (octoshot && shotTimer % PLAYER_SHOT_COOLDOWN == 0) {
@@ -123,8 +128,9 @@ class Player extends GameObject
     }
   }
   void die() {
-    if (lives <= 0) {
+    if (lives <= 1) {
       curHealth = 0;
+      lives = 0;
       isAlive = false;
       for (GameObject o : objects) {
         if (o instanceof Enemy) {

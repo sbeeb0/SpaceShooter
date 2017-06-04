@@ -8,7 +8,6 @@
 abstract class Projectile extends GameObject
 {
   int duration;
-
   Projectile(float x, float y, float w, float h, float xSpeed, float ySpeed)
   {
     super(x, y, w, h);
@@ -101,29 +100,31 @@ class heatShot extends PlayerProjectile
   private PVector location;
   heatShot(float x, float y)
   {
-    super(x, y, blueShot.width, blueShot.height, random(-3, 3), -random(-3, 3));
+    super(x, y, blueShot.width, blueShot.height, 3, -5);
     location = new PVector(x, y, 0);
     duration = 400;
     image = blueShot;
-    damage = PLAYER_SHOT_DAMAGE;
+    damage = 0;
   }
   void act() {
     super.act();
     for (GameObject o : objects) {
       if (o instanceof Enemy) {
-        float angle = atan2(o.y-location.y, o.x-location.x);
-        float newX = cos(angle)*(ySpeed/xSpeed)+location.x;
-        float newY = sin(angle)*(ySpeed/xSpeed)+location.y;
-        x = newX;
-        y = newY;
-        xSpeed = o.xSpeed;
-        ySpeed = o.ySpeed;
-        println(o);
-        location.set(x, y, 0);
-        if (x == o.x) {
-          die();
-        } else if (y == o.y) {
-          die();
+        if (dist(p.x, p.y, o.x, o.y) <= 300) {
+          float angle = atan2(o.y-location.y, o.x-location.x);
+          float newX = cos(angle)*(ySpeed/xSpeed)+location.x;  
+          float newY = sin(angle)*(ySpeed/xSpeed)+location.y;
+          if (xSpeed <= 0) {
+            xSpeed *= -1;
+          }
+          if (ySpeed <= 0) {
+            ySpeed *= -1;
+          }
+          x = newX;
+          y = newY;
+          location.set(x, y, 0);
+          println("ENEMY POS: (" + round(o.x) + ", " + round(o.y) + ")");
+          println("TARGET POS: (" + round(newX) + ", " + round(newY) + ")");
         }
       }
     }
@@ -201,24 +202,23 @@ class omniShot extends EnemyProjectile
 
 class TerminatorShot extends EnemyProjectile
 {
+  float newY;
   TerminatorShot(float x, float y, float speed)
   {
     super(x, y, redShot.width, redShot.height, speed, 0);
-    duration = 200;
+    duration = 420;
     image = redShot;
     damage = TERMINATOR_SHOT_DAMAGE;
   }
   void act() {
     super.act();
-    if (timer % 15 == 0) {
-      w+= 10;
-      h+= 10;
-    } else {
-      w--;
-      h--;
+    if (timer % 120 > 0) {
+      newY = sin(x*70) + y;
+      y = newY;
     }
   }
 }
+
 
 class glassesProj extends EnemyProjectile
 {
